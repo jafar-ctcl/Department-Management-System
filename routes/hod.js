@@ -3,6 +3,7 @@ var router = express.Router();
 const hodHelpers = require('../helpers/hodHelpers');
 const { log } = require('handlebars');
 const teacherHelpers = require('../helpers/teacherHelpers');
+const session = require('express-session');
 
 var hod = true
 
@@ -29,8 +30,8 @@ router.get('/', verifyLogin, async (req, res) => {
   // let teachers = await hodHelpers.getAllTeachers()
 
   res.render('hod/dashboard', {
-
     hod,
+    name:"Sajith",
     students,
     totalStudents,
     totalTeachers,

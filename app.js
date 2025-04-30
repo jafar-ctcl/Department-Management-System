@@ -68,7 +68,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: 'dms', cookie: { maxAge: 600000 } }));
+app.use(session({ secret: 'dms', cookie: { maxAge: 6000000 } }));
 app.use('/', studentRouter);
 app.use('/hod', hodRouter);
 app.use('/teacher', teacherRouter);

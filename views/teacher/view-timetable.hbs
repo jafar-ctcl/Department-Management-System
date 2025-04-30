@@ -1,187 +1,127 @@
-<div class="container ">
-  <a href="/teacher">Home</a>
-   {{#if days.length}}
-  <h2 class="text-center">Timetable</h2>
-  {{!--
-  <pre>{{json timetable}}</pre> --}}
- 
-  <!-- Table displaying the timetable -->
-  <table class="table table-bordered table-striped">
-    <thead class="table-dark text-center">
-      <tr>
-        <th>Day</th>
-        {{#each times}}
-        <th>{{this}}</th>
-        {{/each}}
-      </tr>
-    </thead>
-    <tbody>
-      {{#each days}} <!-- Loop over each day -->
-      <tr>
-        <td class="align-middle text-center">{{this}}</td> <!-- Display the current day -->
-        {{#if (lookup ../timetable this)}} <!-- Check if timetable exists for the current day -->
-        {{#each (lookup ../timetable this)}} <!-- Loop through time slots for the current day -->
-     
+<div class="container mt-4">
+  <a href="/teacher" class="btn btn-outline-primary mb-3">🏠 Home</a>
+
+  {{#if days.length}}
+  <h2 class="text-center fw-bold text-dark">📅 Timetable</h2>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>Day</th>
+          {{#each times}}
+          <th>{{this}}</th>
+          {{/each}}
+        </tr>
+      </thead>
+      <tbody>
+        {{#each days}}
+        <tr>
+          <td class="align-middle text-center fw-bold bg-light">{{this}}</td>
+          {{#if (lookup ../timetable this)}}
+          {{#each (lookup ../timetable this)}}
           <td class="text-left">
-              {{#if subjects.length}} <!-- Check if there are subjects -->
-              {{#each subjects}} <!-- Loop through the subjects for that time slot -->
-              <ul class="mb-0">
-                <li><strong>{{subject}}</strong> ({{course}} - {{semester}})</li>
-              </ul>
+            {{#if subjects.length}}
+            <ul class="mb-0">
+              {{#each subjects}}
+              <li><strong>{{subject}}</strong> ({{course}} - {{semester}})</li>
               {{/each}}
-              {{else}} <!-- If no subjects are available -->
-              <ul class="mb-0">
-                <li>No class</li>
-              </ul>
-              {{/if}}
-            </td>
+            </ul>
+            {{else}}
+            <ul class="mb-0"><li>No class</li></ul>
+            {{/if}}
+          </td>
+          {{/each}}
+          {{else}}
+          <td colspan="{{../times.length}}" class="text-center fw-bold text-muted bg-light">
+            No classes scheduled
+          </td>
+          {{/if}}
+        </tr>
         {{/each}}
-        {{else}}
-        <td colspan="2" class="text-center">No classes scheduled</td>
-        <!-- Display message if no classes are scheduled -->
-        {{/if}}
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
-  {{else}}
- 
-  <div class="alert alert-danger text-center mt-4">
-   <p class="text-center">No timetable available for this teacher.</p>
+      </tbody>
+    </table>
   </div>
-   <div class="text-center">
-  <a href="/teacher" class="btn btn-primary btn-sm mb-4">Go Back</a>
-</div>
+
+  {{else}}
+  <div class="alert alert-danger text-center mt-4">
+    ❌ No timetable available for this teacher.
+  </div>
+  <div class="text-center">
+    <a href="/teacher" class="btn btn-primary btn-sm mt-2">🔙 Go Back</a>
+  </div>
   {{/if}}
 </div>
+
 <style>
-  /* General Table Styling */
+  /* Table Styling */
   .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   .table td,
   .table th {
-    vertical-align: middle;
-    padding: 15px;
-    border: 1px solid #ddd;
+    padding: 12px;
     font-size: 14px;
+    border: 1px solid #ddd;
   }
 
   .table th {
-    text-align: center;
     background-color: #343a40;
     color: white;
     font-size: 16px;
     font-weight: bold;
   }
 
-  /* Add striped effect for rows */
-  .table-striped tbody tr:nth-of-type(odd) {
-    background-color: #f2f2f2;
+  /* Responsive Table */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  /* Table border */
-  .table-bordered td,
-  .table-bordered th {
-    border: 1px solid #ddd;
-  }
-
-  /* Styling for table cells */
-  .table td {
-    background-color: #fff;
-    text-align: left;
-    padding: 10px;
-  }
-
-  .table td.text-center {
-    text-align: center;
-  }
-
-  /* Responsiveness: Make the table scrollable on small screens */
-  @media (max-width: 768px) {
-    .table-wrapper {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-  }
-
-  /* Heading and Container Styles */
-  .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-
-  h2 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #343a40;
-    margin-bottom: 30px;
-  }
-
-  .text-center {
-    text-align: center;
-  }
-
-  /* Home link styling */
-  a {
-    text-decoration: none;
-    color: #007bff;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
-
-  /* Custom Styles for Table Rows */
+  /* Hover Effect */
   .table tbody tr:hover {
     background-color: #f1f1f1;
-    cursor: pointer;
+    transition: 0.3s;
   }
 
-  /* Styling for "No classes scheduled" cell */
-  .table td[colspan="2"] {
-    font-size: 18px;
+  /* No Classes Cell */
+  .table td[colspan] {
+    font-size: 16px;
     font-weight: 500;
-    color: #888;
+    color: #666;
     text-align: center;
     background-color: #f9f9f9;
   }
 
-  /* List styling for subjects */
+  /* Heading & Button Styles */
+  h2 {
+    font-size: 24px;
+    color: #343a40;
+    margin-bottom: 20px;
+  }
+
+  .btn-outline-primary {
+    font-weight: bold;
+    border-radius: 8px;
+  }
+
+  /* List Styles */
   ul {
     list-style-type: none;
     padding-left: 0;
-    margin-bottom: 0;
   }
 
   ul li {
     font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 5px;
   }
 
-  ul li strong {
-    font-weight: bold;
-  }
-
-  /* Styling for responsive tables */
-  .table td {
-    word-wrap: break-word;
-  }
-
-  /* Add spacing between the table and the rest of the content */
+  /* Spacing */
   .mt-4 {
-    margin-top: 4rem !important;
+    margin-top: 2rem !important;
   }
 
   .mb-4 {
-    margin-bottom: 4rem !important;
+    margin-bottom: 2rem !important;
   }
 </style>
